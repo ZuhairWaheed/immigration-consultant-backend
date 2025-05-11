@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+   // private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepository repo, PasswordEncoder encoder, JwtUtil jwtUtil) {
+    public AuthService(UserRepository repo, JwtUtil jwtUtil) {
         this.userRepository = repo;
-        this.passwordEncoder = encoder;
+        //this.passwordEncoder = encoder;
         this.jwtUtil = jwtUtil;
     }
 
@@ -29,7 +29,8 @@ public class AuthService {
 
         User user = new User();
         user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(request.getPassword());
+        //user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFullName(request.getFullName());
         userRepository.save(user);
     }
@@ -38,7 +39,7 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        if (!request.getPassword().equals(user.getPassword())) {
             throw new RuntimeException("Invalid email or password");
         }
 

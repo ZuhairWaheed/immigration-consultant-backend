@@ -1,6 +1,6 @@
 package com.immigrationConsultant.backend.config;
 
-import com.immigrationConsultant.backend.service.UserDetailsServiceImpl;
+import com.immigrationConsultant.backend.util.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,11 +15,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-    private final UserDetailsServiceImpl userDetailsService;
 
-    public SecurityConfig(JwtFilter jwtFilter, UserDetailsServiceImpl uds) {
+    public SecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
-        this.userDetailsService = uds;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -38,8 +41,4 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

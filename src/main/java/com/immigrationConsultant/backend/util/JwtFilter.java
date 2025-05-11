@@ -1,4 +1,4 @@
-package com.immigrationConsultant.backend.config;
+package com.immigrationConsultant.backend.util;
 
 import com.immigrationConsultant.backend.service.UserDetailsServiceImpl;
 import com.immigrationConsultant.backend.util.JwtUtil;
